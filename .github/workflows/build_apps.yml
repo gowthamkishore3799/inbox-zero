@@ -4,8 +4,6 @@ run-name: "Build Inbox Zero Docker Image"
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 env:
   DOCKER_IMAGE_REGISTRY: "ghcr.io"
