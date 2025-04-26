@@ -13,7 +13,7 @@ env:
 
 jobs:
   set-version:
-    if: ${{ github.repository == format('{0}/inbox-zero', env.DOCKER_USERNAME) }}
+    if: ${{ github.repository == "gowthamkishore3799/inbox-zero" }}
     runs-on: ubuntu-latest
 
     outputs:
@@ -63,7 +63,7 @@ jobs:
 
   build-frontend:
     name: "Build Docker Image"
-    if: ${{ github.repository == format('{0}/inbox-zero', env.DOCKER_USERNAME) }}
+    if: ${{ github.repository == "gowthamkishore3799/inbox-zero" }}
     runs-on: ubuntu-latest
     needs:
       - set-version
