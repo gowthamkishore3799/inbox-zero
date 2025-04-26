@@ -9,11 +9,11 @@ on:
 
 env:
   DOCKER_IMAGE_REGISTRY: "ghcr.io"
-  DOCKER_USERNAME: "gowthamkishore3799"
+  DOCKER_USERNAME: "elie222"
 
 jobs:
   set-version:
-    if: github.repository == 'gowthamkishore3799/inbox-zero'
+    if: github.repository == 'elie222/inbox-zero'
     runs-on: ubuntu-latest
 
     outputs:
@@ -52,8 +52,8 @@ jobs:
       - name: Push Git Tag
         id: push_git_tag
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
 
           NEW_TAG="${{ steps.increment_tag.outputs.new_tag }}"
 
@@ -63,7 +63,7 @@ jobs:
 
   build-frontend:
     name: "Build Docker Image"
-    if: github.repository == 'gowthamkishore3799/inbox-zero'
+    if: github.repository == 'elie222/inbox-zero'
     runs-on: ubuntu-latest
     needs:
       - set-version
