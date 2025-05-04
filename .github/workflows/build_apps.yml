@@ -109,7 +109,7 @@ jobs:
           echo " Version updated to ${{steps.update_version.outputs.new_version}} on main" >> $GITHUB_STEP_SUMMARY
 
       - name: Push changes
-        uses: ad-m/github-push-action@newTrial
+        uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.PASSWORD }}
           force_with_lease: true
