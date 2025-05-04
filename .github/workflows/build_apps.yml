@@ -61,3 +61,58 @@ jobs:
           tags: |
             ghcr.io/${{ env.DOCKER_USERNAME }}/inbox-zero:latest
             ghcr.io/${{ env.DOCKER_USERNAME }}/inbox-zero:${{ needs.set-version.outputs.version }}
+
+  update_version_txt:
+    needs:
+      - set-version
+      - build-frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PASSWORD }}
+
+      - name: Update tag
+        id: update_tag
+        shell: bash
+        run: |
+          echo " ==== ${{needs.set-version.outputs.version}} ==== "
+          NEW_TAG="${{ needs.set-version.outputs.version }}"
+          git tag ${NEW_TAG}
+
+      - name: Bump version
+        id: bump_version
+        shell: bash
+        run: |
+          set -x
+          version=${needs.set-version.outputs.version}
+          IFS='.' read -r -a version_parts <<< "$version"
+
+          for i in {0..2}; do
+            echo "${version_parts[$i]} Message"
+            version_parts[$i]=${version_parts[$i]:-0}
+          done
+
+          ((version_parts[2]++))
+
+          new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
+          echo "$new_version" > version.txt
+          echo "new_version=${new_version}" >> $GITHUB_OUTPUT
+
+      - name: Commit updated version file
+        shell: bash
+        run: |
+          git config --local user.email "github-actions@inbox-zero.com"
+          git config --local user.name "github-actions"
+          git commit -a -m "Update base version to ${{steps.update_version.outputs.new_version}}"
+          echo " Version updated to ${{steps.update_version.outputs.new_version}} on main" >> $GITHUB_STEP_SUMMARY
+
+      - name: Push changes
+        uses: ad-m/github-push-action
+        with:
+          github_token: ${{ secrets.PASSWORD }}
+          branch: main
+          force_with_lease: true
+          tags: true
