@@ -111,6 +111,7 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
         with:
+          ref: newTrial
           github_token: ${{ secrets.PASSWORD }}
           force_with_lease: true
           tags: true
