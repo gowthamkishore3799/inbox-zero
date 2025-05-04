@@ -86,7 +86,7 @@ jobs:
         shell: bash
         run: |
           set -x
-          version=${needs.set-version.outputs.version}
+          version="${{needs.set-version.outputs.version}}""
           IFS='.' read -r -a version_parts <<< "$version"
 
           for i in {0..2}; do
