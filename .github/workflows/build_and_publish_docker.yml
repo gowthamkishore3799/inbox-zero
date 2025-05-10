@@ -3,7 +3,7 @@ run-name: "Build Inbox Zero Docker Image"
 
 on:
   push:
-    branches: [ "trials" ]
+    branches: [ "trails" ]
 
 env:
   DOCKER_IMAGE_REGISTRY: "ghcr.io"
