@@ -22,9 +22,9 @@ jobs:
 
       - name: Set version
         id: set_version
-        shell: bash
         run: |
-          echo "version=$(cat version.txt) | tee -a $GITHUB_OUTPUT"
+          version=$(cat version.txt)
+          echo "version=$version" >> $GITHUB_OUTPUT
 
   build-frontend:
     name: "Build Docker Image"
@@ -57,4 +57,4 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ env.DOCKER_USERNAME }}/inbox-zero:latest
-            ghcr.io/${{ env.DOCKER_USERNAME }}/inbox-zero:${{ needs.set_version.outputs.version }}
+            ghcr.io/${{ env.DOCKER_USERNAME }}/inbox-zero:${{ needs.set-version.outputs.version }}
