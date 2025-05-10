@@ -98,9 +98,9 @@ jobs:
       - name: Commit updated version file
         shell: bash
         run: |
-          git tag -a "${{ needs.set-version.outputs.version }}" -m "Release version ${{ needs.set-version.outputs.version }}"
           git config --local user.email "github-actions@inboxzero.com"
           git config --local user.name "github-actions"
+          git tag -a "${{ needs.set-version.outputs.version }}" -m "Release version ${{ needs.set-version.outputs.version }}"
           git commit -a -m "Update base version to ${{steps.update_version_txt.outputs.new_version}}"
           echo "Version updated to ${{steps.update_version_txt.outputs.new_version}} on main" >> $GITHUB_STEP_SUMMARY
 
