@@ -86,6 +86,7 @@ jobs:
             version_parts[$i]=${version_parts[$i]:-0}
           done
           echo "${version_parts[2]}"
+          echo "Data....."
           ((version_parts[2]++))
           echo "After completion"
           new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
