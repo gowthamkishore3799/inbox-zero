@@ -85,9 +85,9 @@ jobs:
           for i in {0..2}; do
             version_parts[$i]=${version_parts[$i]:-0}
           done
-          echo "${version_parts[2]}"
+          echo "${version_parts[@]}"
           echo "Data....."
-          ((version_parts[2]++))
+          version_parts[2]=$((version_parts[2] + 1))
           echo "${version_parts[2]} Values"
           new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
 
