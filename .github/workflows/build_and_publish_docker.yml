@@ -71,7 +71,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.1
         with:
-          ref: main
+          ref: trails
           fetch-depth: 0
 
       - name: Bump version on main branch
