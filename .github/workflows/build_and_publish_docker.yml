@@ -26,7 +26,7 @@ jobs:
           version=$(cat version.txt)
           echo "version=$version" >> $GITHUB_OUTPUT
 
-  build-frontend:
+  build-docker:
     name: "Build Docker Image"
     runs-on: ubuntu-latest
     needs:
@@ -55,6 +55,55 @@ jobs:
           file: docker/Dockerfile.web
           platforms: linux/amd64,linux/arm64
           push: true
+          cache-from: type=gha
+          cache-to: type=gha, mode=max
           tags: |
             ghcr.io/${{ env.DOCKER_USERNAME }}/inbox-zero:latest
             ghcr.io/${{ env.DOCKER_USERNAME }}/inbox-zero:${{ needs.set-version.outputs.version }}
+
+  update_version_txt:
+    needs:
+      - set-version
+      - build-docker
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Bump version on main branch
+        id: update_version
+        shell: bash
+        run: |
+          set -x
+          BASE_VERSION=$(tr -d '\r' < version.txt | xargs)
+          IFS='.' read -r -a version_parts <<< "$BASE_VERSION"
+          # Ensure all version parts are set
+          for i in {0..2}; do
+            version_parts[$i]=${version_parts[$i]:-0}
+          done
+          ((version_parts[2]++))
+          new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
+
+          # Update version file with the new version
+          echo "$new_version" > version.txt
+          echo "new_version=${new_version}" >> $GITHUB_OUTPUT
+
+      - name: Commit updated version file
+        shell: bash
+        run: |
+
+          git config --local user.email "github-actions@inboxzero.com"
+          git config --local user.name "github-actions"
+          git commit -a -m "Update base version to ${{steps.update_version.outputs.new_version}}"
+          echo "Version updated to ${{steps.update_version.outputs.new_version}} on main" >> $GITHUB_STEP_SUMMARY
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          force_with_lease: true
