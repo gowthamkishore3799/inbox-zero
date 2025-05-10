@@ -85,6 +85,7 @@ jobs:
           for i in {0..2}; do
             version_parts[$i]=${version_parts[$i]:-0}
           done
+          echo "${version_parts[2]}"
           ((version_parts[2]++))
           new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
 
@@ -98,8 +99,8 @@ jobs:
 
           git config --local user.email "github-actions@inboxzero.com"
           git config --local user.name "github-actions"
-          git commit -a -m "Update base version to ${{steps.update_version.outputs.new_version}}"
-          echo "Version updated to ${{steps.update_version.outputs.new_version}} on main" >> $GITHUB_STEP_SUMMARY
+          git commit -a -m "Update base version to ${{steps.update_version_txt.outputs.new_version}}"
+          echo "Version updated to ${{steps.update_version_txt.outputs.new_version}} on main" >> $GITHUB_STEP_SUMMARY
 
       - name: Push changes
         uses: ad-m/github-push-action@master
