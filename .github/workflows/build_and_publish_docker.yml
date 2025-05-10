@@ -89,6 +89,8 @@ jobs:
           ((version_parts[2]++))
           new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
 
+          echo "${{new_version}} New Version"
+
           # Update version file with the new version
           echo "$new_version" > version.txt
           echo "new_version=${new_version}" >> $GITHUB_OUTPUT
