@@ -79,14 +79,12 @@ jobs:
         shell: bash
         run: |
           set -x
-          BASE_VERSION=$(tr -d '\r' < version.txt | xargs)
+          BASE_VERSION= ${{ needs.set-version.outputs.version}}
           IFS='.' read -r -a version_parts <<< "$BASE_VERSION"
           # Ensure all version parts are set
           for i in {0..2}; do
             version_parts[$i]=${version_parts[$i]:-0}
           done
-          echo "${version_parts[@]}"
-          echo "Data....."
           version_parts[2]=$((version_parts[2] + 1))
           echo "${version_parts[2]} Values"
           new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
@@ -100,7 +98,7 @@ jobs:
       - name: Commit updated version file
         shell: bash
         run: |
-
+          git tag -a "${{ needs.set-version.outputs.version }}" -m "Release version ${{ needs.set-version.outputs.version }}"
           git config --local user.email "github-actions@inboxzero.com"
           git config --local user.name "github-actions"
           git commit -a -m "Update base version to ${{steps.update_version_txt.outputs.new_version}}"
@@ -112,3 +110,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
           force_with_lease: true
+          tags: true
