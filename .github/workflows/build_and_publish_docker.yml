@@ -87,9 +87,8 @@ jobs:
           done
           echo "${version_parts[2]}"
           echo "Data....."
-          ((version_parts[2]++))
           echo "After completion"
-          new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
+          new_version="${version_parts[0]}.${version_parts[1]}.${++version_parts[2]}"
 
           echo "${new_version} New Version"
 
