@@ -81,7 +81,6 @@ jobs:
           set -x
           BASE_VERSION=${{ needs.set-version.outputs.version }}
           IFS='.' read -r -a version_parts <<< "$BASE_VERSION"
-          # Ensure all version parts are set
           for i in {0..2}; do
             version_parts[$i]=${version_parts[$i]:-0}
           done
