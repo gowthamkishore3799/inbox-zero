@@ -1,13 +1,24 @@
+# Base image
 FROM node:22-alpine
 
-WORKDIR /app
-
-RUN apk add --no-cache openssl
-
-RUN npm install -g pnpm
-
-COPY . .
-
+# Set working directory
 WORKDIR /app/apps/web
 
+# Install openssl and pnpm globally
+RUN apk add --no-cache openssl \
+    && npm install -g pnpm
+
+# Copy only the package files first for faster caching
+COPY apps/web/package*.json apps/web/pnpm-lock.yaml ./
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile --prod
+
+# Copy the rest of the application code
+COPY . .
+
+# Ensure the entrypoint script is executable
+RUN chmod +x /app/apps/web/entrypoint.sh
+
+# Use the entrypoint script
 CMD ["/bin/sh", "/app/apps/web/entrypoint.sh"]
