@@ -102,6 +102,7 @@ jobs:
           for i in {0..2}; do
             version_parts[$i]=${version_parts[$i]:-0}
           done
+          
           version_parts[2]=$((version_parts[2] + 1))
           new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
           echo "$new_version" > version.txt
