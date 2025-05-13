@@ -76,7 +76,7 @@ jobs:
           git config --local user.name "github-actions"
           git tag -a "$VERSION" -m "Release version $VERSION"
           git commit -a -m "Bump version from $VERSION to $NEW_VERSION"
-          echo "Tagged version $VERSION. Updated version.txt to $NEW_VERSION on newmain." >> $GITHUB_STEP_SUMMARY
+          echo "Tagged version $VERSION . Updated version.txt to $NEW_VERSION on newmain." >> $GITHUB_STEP_SUMMARY
 
       - name: Push changes
         uses: ad-m/github-push-action@v0.8.0
