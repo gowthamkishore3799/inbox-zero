@@ -27,6 +27,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.1
 
+      - name: Force Pull Latest Code
+        run: |
+          git fetch origin workflow
+          git reset --hard origin/workflow
+          git clean -fd
+
       - name: Set version
         id: set_version
         run: |
