@@ -33,9 +33,9 @@ jobs:
         run: |
           git config --local user.email "github-actions@getinboxzero.com"
           git config --local user.name "github-actions"
-          git fetch origin ${{github.ref}}
-          git checkout ${{github.ref}} -- version.txt
-          git pull origin ${{ github.ref }}
+          git fetch origin workflow
+          git checkout workflow
+          git pull origin workflow
 
       - name: Set version
         id: set_version
@@ -87,7 +87,7 @@ jobs:
         uses: ad-m/github-push-action@v0.8.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          branch: workflow
           force_with_lease: true
           tags: true
 
