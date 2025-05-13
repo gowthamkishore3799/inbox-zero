@@ -27,17 +27,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.1
 
-      - name: Get latest version.txt from main branch
-        id: fetch_latest_version
-        shell: bash
-        run: |
-          git config --local user.email "github-actions@getinboxzero.com"
-          git config --local user.name "github-actions"
-          echo "${{github.ref}}"
-          git fetch origin workflow
-          git checkout workflow
-          git pull origin workflow
-
       - name: Set version
         id: set_version
         run: |
