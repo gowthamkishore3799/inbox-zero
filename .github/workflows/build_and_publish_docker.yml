@@ -1,5 +1,5 @@
 name: "Build Inbox Zero Docker Image"
-run-name: "Build Inbox Zero Docker Image"
+run-name: "Build Inbox Zero Docker Images"
 
 on:
   push:
