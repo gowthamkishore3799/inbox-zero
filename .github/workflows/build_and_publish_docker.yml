@@ -54,7 +54,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.1
         with:
-          ref: ${{ github.ref }}
+          ref: workflow
           fetch-depth: 0
 
       - name: Bump version on main branch
@@ -79,9 +79,11 @@ jobs:
           echo "${{ steps.update_version.outputs.new_version }}" > version.txt
           git config --local user.email "github-actions@getinboxzero.com"
           git config --local user.name "github-actions"
+          git add version.txt  # Ensure the updated version.txt is staged
+          git commit -m "Bump version from ${{ needs.set-version.outputs.version }} to ${{ steps.update_version.outputs.new_version }}"
           git tag -a "${{ needs.set-version.outputs.version }}" -m "Release version ${{ needs.set-version.outputs.version }}"
-          git commit -a -m "Bump version from ${{ needs.set-version.outputs.version }} to ${{ steps.update_version.outputs.new_version }}"
-          echo "Tagged version ${{ needs.set-version.outputs.version }}. Updated version.txt to ${{ steps.update_version.outputs.new_version }} on main . " >> $GITHUB_STEP_SUMMARY
+          echo "Tagged version ${{ needs.set-version.outputs.version }}. Updated version.txt to ${{ steps.update_version.outputs.new_version }} on main." >> $GITHUB_STEP_SUMMARY
+
 
       - name: Push changes
         uses: ad-m/github-push-action@v0.8.0
