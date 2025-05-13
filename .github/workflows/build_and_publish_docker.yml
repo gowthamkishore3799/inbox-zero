@@ -70,7 +70,7 @@ jobs:
 
           version_parts[2]=$((version_parts[2] + 1))
           new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
-          echo "$new_version New version"
+          echo "$new_version New version s"
           echo "new_version=${new_version}" >> $GITHUB_OUTPUT
 
       - name: Commit updated version file
