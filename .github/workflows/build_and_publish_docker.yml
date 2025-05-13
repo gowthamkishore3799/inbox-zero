@@ -30,8 +30,7 @@ jobs:
       - name: Force Pull Latest Code
         run: |
           git fetch origin workflow
-          git reset --hard origin/workflow
-          git clean -fd
+          git pull origin workflow
 
       - name: Set version
         id: set_version
