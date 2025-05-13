@@ -33,7 +33,7 @@ jobs:
         run: |
           git config --local user.email "github-actions@getinboxzero.com"
           git config --local user.name "github-actions"
-          BRANCH_NAME="${{ github.ref#refs/heads/ }}""
+          BRANCH_NAME="${{ GITHUB_REF##refs/heads/ }}""
           git fetch origin $BRANCH_NAME
           git checkout $BRANCH_NAME
           git pull origin $BRANCH_NAME
