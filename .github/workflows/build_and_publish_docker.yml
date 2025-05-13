@@ -76,7 +76,7 @@ jobs:
       - name: Commit updated version file
         shell: bash
         run: |
-          echo "${{ needs.set-version.outputs.version }}" > version.txt
+          echo "${{ needs.set-version.outputs.new_version }}" > version.txt
           git config --local user.email "github-actions@getinboxzero.com"
           git config --local user.name "github-actions"
           git commit -m "Bump version from ${{ needs.set-version.outputs.version }} to ${{ steps.update_version.outputs.new_version }}"
