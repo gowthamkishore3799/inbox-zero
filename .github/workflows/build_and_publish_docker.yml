@@ -33,9 +33,9 @@ jobs:
         run: |
           git config --local user.email "github-actions@getinboxzero.com"
           git config --local user.name "github-actions"
-          git fetch origin workflow
-          git checkout workflow
-          git pull origin workflow
+          git fetch origin ${{github.ref}}
+          git checkout ${{github.ref}}
+          git pull origin ${{github.ref}}
 
       - name: Set version
         id: set_version
@@ -76,7 +76,6 @@ jobs:
       - name: Commit updated version file
         shell: bash
         run: |
-          git switch workflow
           echo "${{ steps.update_version.outputs.new_version }}" > version.txt
           git config --local user.email "github-actions@getinboxzero.com"
           git config --local user.name "github-actions"
@@ -85,11 +84,12 @@ jobs:
           git tag -a "${{ needs.set-version.outputs.version }}" -m "Release version ${{ needs.set-version.outputs.version }}"
           echo "Tagged version ${{ needs.set-version.outputs.version }}. Updated version.txt to ${{ steps.update_version.outputs.new_version }} on main." >> $GITHUB_STEP_SUMMARY
 
+
       - name: Push changes
         uses: ad-m/github-push-action@v0.8.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: workflow
+          branch: ${{ github.ref }}
           force: true
           tags: true
 
