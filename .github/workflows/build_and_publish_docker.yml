@@ -69,11 +69,10 @@ jobs:
       - name: Commit updated version file
         shell: bash
         env:
-          VERSION: ${{ needs.set-version.outputs.version }}
+          VERSION: ${{ needs.fetch-version.outputs.version }}
           NEW_VERSION: ${{ steps.update_version.outputs.new_version }}
         run: |
-          echo "$NEW_VERSION Version.."
-          echo "$NEW_VERSION" > version.txt
+          echo "${NEW_VERSION}" > version.txt
           git config --local user.email "github-actions@getinboxzero.com"
           git config --local user.name "github-actions"
           git tag -a "$VERSION" -m "Release version $VERSION"
