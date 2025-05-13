@@ -33,9 +33,9 @@ jobs:
         run: |
           git config --local user.email "github-actions@getinboxzero.com"
           git config --local user.name "github-actions"
-          git fetch origin ${{github.ref}}
-          git checkout ${{github.ref}}
-          git pull origin ${{github.ref}}
+          git fetch origin ${{ github.ref | replace('refs/heads/', '') }}
+          git checkout ${{ github.ref | replace('refs/heads/', '') }}
+          git pull origin ${{ github.ref | replace('refs/heads/', '') }}
 
       - name: Set version
         id: set_version
@@ -70,13 +70,12 @@ jobs:
 
           version_parts[2]=$((version_parts[2] + 1))
           new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
-          echo "$new_version New version s"
+          echo "$new_version" > version.txt
           echo "new_version=${new_version}" >> $GITHUB_OUTPUT
 
       - name: Commit updated version file
         shell: bash
         run: |
-          echo "${{ steps.update_version.outputs.new_version }}" > version.txt
           git config --local user.email "github-actions@getinboxzero.com"
           git config --local user.name "github-actions"
           git add version.txt  # Ensure the updated version.txt is staged
