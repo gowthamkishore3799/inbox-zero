@@ -41,7 +41,7 @@ jobs:
         id: set_version
         run: |
           version=$(cat version.txt)
-          echo "${{version}}"
+          echo "${{version}} Version"
           echo "version=$version" >> $GITHUB_OUTPUT
 
   build-docker:
