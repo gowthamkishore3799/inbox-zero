@@ -71,11 +71,11 @@ jobs:
           version_parts[2]=$((version_parts[2] + 1))
           new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
           echo "new_version=${new_version}" >> $GITHUB_OUTPUT
-          echo "${new_version}" > version.txt
 
       - name: Commit updated version file
         shell: bash
         run: |
+          echo "${{steps.update_version.outputs.new_version}}" > version.txt
           git config --local user.email "github-actions@getinboxzero.com"
           git config --local user.name "github-actions"
           git tag -a "${{ needs.set-version.outputs.version }}" -m "Release version ${{ needs.set-version.outputs.version }}"
